@@ -1,0 +1,182 @@
+//Bank System Project
+#include <iostream>
+#include <cstring>
+
+// Constants
+const int MAX_ACCOUNTS = 100;
+
+// Structures
+struct Account {
+    int accountNumber;
+    std::string username;
+    std::string password;
+    std::string email;
+    double balance;
+};
+
+// Global Variables
+Account accounts[MAX_ACCOUNTS];
+int numAccounts = 0;
+
+// Function Prototypes
+int search(const std::string & username);
+void createAccount();
+bool login();
+void showAccount();
+void deposit();
+void withdrawal();
+double checkBalance();
+bool checkVisaValidation();
+void displayMenu();
+
+// Function Definitions
+int search(const std::string& username) {
+    for (int i = 0; i < numAccounts; i++) {
+        if (accounts[i].username == username) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void createAccount() {
+    Account newAccount;
+
+    std::cout << "Enter username: ";
+    std::cin >> newAccount.username;
+
+    std::cout << "Enter password: ";
+    std::cin >> newAccount.password;
+
+    std::cout << "Enter email: ";
+    std::cin >> newAccount.email;
+
+    std::cout << "Enter initial balance: ";
+    std::cin >> newAccount.balance;
+
+    newAccount.accountNumber = numAccounts + 1;
+
+    accounts[numAccounts] = newAccount;
+    numAccounts++;
+
+    std::cout << "Account created successfully." << std::endl;
+}
+
+bool login() {
+    std::string username, password;
+
+    std::cout << "Enter username: ";
+    std::cin >> username;
+
+    std::cout << "Enter password: ";
+    std::cin >> password;
+
+    int index = search(username);
+    if (index != -1 && accounts[index].password == password) {
+        std::cout << "Login successful." << std::endl;
+        return true;
+    }
+
+    std::cout << "Invalid username or password." << std::endl;
+    return false;
+}
+
+void showAccount() {
+    if (login()) {
+        int index = search(accounts[index].username);
+        std::cout << "Account Number: " << accounts[index].accountNumber << std::endl;
+        std::cout << "Username: " << accounts[index].username << std::endl;
+        std::cout << "Balance: " << accounts[index].balance << std::endl;
+    }
+}
+
+void deposit() {
+    if (login()) {
+        double amount;
+        std::cout << "Enter amount to deposit: ";
+        std::cin >> amount;
+
+        int index = search(accounts[index].username);
+        accounts[index].balance += amount;
+        std::cout << "Deposit successful. New balance: " << accounts[index].balance << std::endl;
+    }
+}
+
+void withdrawal() {
+    if (login()) {
+        double amount;
+        std::cout << "Enter amount to withdraw: ";
+        std::cin >> amount;
+
+        int index = search(accounts[index].username);
+        if (amount <= accounts[index].balance) {
+            accounts[index].balance -= amount;
+            std::cout << "Withdrawal successful. New balance: " << accounts[index].balance << std::endl;
+        } else {
+            std::cout << "Insufficient balance." << std::endl;
+        }
+    }
+}
+
+double checkBalance() {
+    if (login()) {
+        int index = search(accounts[index].username);
+        return accounts[index].balance;
+    }
+
+    return 0.0;
+}
+
+bool checkVisaValidation() {
+    // Implementation for checking visa validation
+    return true;
+}
+
+void displayMenu() {
+    int choice;
+
+    do {
+        std::cout << "\n===== Bank System Menu =====" << std::endl;
+        std::cout << "1. Create Account" << std::endl;
+        std::cout << "2. Login" << std::endl;
+        std::cout << "3. Show Account Details" << std::endl;
+        std::cout << "4. Deposit" << std::endl;
+        std::cout << "5. Withdrawal" << std::endl;
+        std::cout << "6. Check Balance" << std::endl;
+        std::cout << "0. Exit" << std::endl;
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                createAccount();
+                break;
+            case 2:
+                login();
+                break;
+            case 3:
+                showAccount();
+                break;
+            case 4:
+                deposit();
+                break;
+            case 5:
+                withdrawal();
+                break;
+            case 6:
+                std::cout << "Current Balance: " << checkBalance() << std::endl;
+                break;
+            case 0:
+                std::cout << "Exiting..." << std::endl;
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
+        }
+    } while (choice != 0);
+}
+
+// Main Function
+int main() {
+    displayMenu();
+    return 0;
+}
